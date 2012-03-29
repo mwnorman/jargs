@@ -1,12 +1,10 @@
 package jargs.gnu;
 
-
-
 import java.io.PrintStream;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -17,9 +15,21 @@ import java.util.Map;
  * associated values (-d 2, --debug 2, --debug=2). Option processing
  * can be explicitly terminated by the argument '--'.
  * 
- * @author Steve Purcell
- * @version $Revision: 1.10 $
+ * @author Mike Norman
+ * @version $Revision: 1.11 $
  * @see jargs.examples.gnu.OptionTest
+ *
+ * List of authors:
+ *  2001-2003 Steve Purcell.
+ *  2002      Vidar Holen.
+ *  2002      Michal Ceresna.
+ *  2005      Ewan Mellor.
+ *  2011      M. Amber Hassaan
+ *             - generics
+ *             - replace Vector/Hashtable w List/ArrayList/Map/HashMap
+ *  2012      M. Norman
+ *             - support optional arguments: create a new <Void> OptionValueParser
+ *               (useful for --help or --verbose options that dont need any actual values)
  */
 public class CmdLineParser {
 
@@ -389,6 +399,24 @@ public class CmdLineParser {
     return addOption (new Option<Boolean> (longForm, false, flagParser, helpMsg));
   }
   
+  /**
+   * Convenience method for adding an optional <Void> option.
+   * 
+   * @return the new Option
+   */
+  public final Option<Void> addVoidOption (char shortForm, String longForm, String helpMsg) {
+    return addOption (new Option<Void> (shortForm, longForm, false, voidParser, helpMsg));
+  }
+  
+  /**
+   * Convenience method for adding an optional <Void> option.
+   * 
+   * @return the new Option
+   */
+  public final Option<Void> addVoidOption(String longForm, String helpMsg) {
+    return addOption(new Option<Void>(longForm, false, voidParser, helpMsg));
+  }
+  
   
   /**
    * Allow conversion of option values into user defined types
@@ -542,10 +570,18 @@ public class CmdLineParser {
     printUsage (System.err);
   }
 
-
   private String[] remainingArgs = null;
-  private Map<String, Option<?>> options = new HashMap<String, CmdLineParser.Option<?>> (10);
+  // switch to LinkedHashMap so that options are printed in order they are added to the parser
+  private Map<String, Option<?>> options = new LinkedHashMap<String, CmdLineParser.Option<?>>(10);
   
+  public static final OptionValueParser<Void> voidParser = new OptionValueParser<Void>() {
+
+      @Override
+      public Void parse(String val, Locale locale) throws IllegalOptionValueException {
+          return null;
+      }
+  };
+
   public static final OptionValueParser<String> stringParser = new OptionValueParser<String>() {
 
     @Override

@@ -1,6 +1,7 @@
 package jargs.test.gnu;
 
 import jargs.gnu.CmdLineParser;
+import jargs.gnu.CmdLineParser.Option;
 
 import java.util.List;
 import java.util.Locale;
@@ -20,7 +21,7 @@ public class CmdLineParserTestCase extends TestCase {
 		CmdLineParser.Option<String> name = parser.addStringOption('n', "name", "enter name");
 		CmdLineParser.Option<Double> fraction = parser.addDoubleOption('f', "fraction", "enter fraction");
 		CmdLineParser.Option<Boolean> missing = parser.addBooleanOption('m', "missing", "enable missing");
-		CmdLineParser.Option<Boolean> careful = parser.addBooleanOption("careful", "enable careful");
+		@SuppressWarnings("unused") CmdLineParser.Option<Boolean> careful = parser.addBooleanOption("careful", "enable careful");
 		CmdLineParser.Option<Long> bignum = parser.addLongOption('b', "bignum", "enter bignum");
 		assertEquals(null, size.getValue ());
 		Long longValue = new Long(new Long(Integer.MAX_VALUE).longValue() + 1);
@@ -85,8 +86,8 @@ public class CmdLineParserTestCase extends TestCase {
 	public void testMultipleUses() throws Exception {
 		CmdLineParser parser = new CmdLineParser();
 		CmdLineParser.Option<Boolean> verbose = parser.addBooleanOption('v', "verbose", "enable verbose");
-		CmdLineParser.Option<Boolean> foo = parser.addBooleanOption('f', "foo", "enable foo");
-		CmdLineParser.Option<Boolean> bar = parser.addBooleanOption('b', "bar", "enable bar");
+		@SuppressWarnings("unused") CmdLineParser.Option<Boolean> foo = parser.addBooleanOption('f', "foo", "enable foo");
+		@SuppressWarnings("unused") CmdLineParser.Option<Boolean> bar = parser.addBooleanOption('b', "bar", "enable bar");
 
 		parser.parse(new String[] {
           "--foo", "-v", "-v", "--verbose", "-v", "-b", "rest"
@@ -153,8 +154,8 @@ public class CmdLineParserTestCase extends TestCase {
 	public void testGetOptionValues() throws Exception {
 		CmdLineParser parser = new CmdLineParser();
 		CmdLineParser.Option<Boolean> verbose = parser.addBooleanOption('v', "verbose", "enable verbose");
-		CmdLineParser.Option<Boolean> foo = parser.addBooleanOption('f', "foo", "enable foo");
-		CmdLineParser.Option<Boolean> bar = parser.addBooleanOption('b', "bar", "enable bar");
+		@SuppressWarnings("unused") CmdLineParser.Option<Boolean> foo = parser.addBooleanOption('f', "foo", "enable foo");
+		@SuppressWarnings("unused") CmdLineParser.Option<Boolean> bar = parser.addBooleanOption('b', "bar", "enable bar");
 
 		parser.parse(new String[] {
           "--foo", "-v", "-v", "--verbose", "-v", "-b", "rest"
@@ -180,7 +181,7 @@ public class CmdLineParserTestCase extends TestCase {
 
 	public void testBadFormat() throws Exception {
 		CmdLineParser parser = new CmdLineParser();
-		CmdLineParser.Option<Integer> size = parser.addIntegerOption('s', "size", "enter size");
+		@SuppressWarnings("unused") CmdLineParser.Option<Integer> size = parser.addIntegerOption('s', "size", "enter size");
 		try {
 			parser.parse(new String[] { "--size=blah" });
 			fail("Expected IllegalOptionValueException");
@@ -231,6 +232,13 @@ public class CmdLineParserTestCase extends TestCase {
 			fail();
 		} catch (CmdLineParser.IllegalOptionValueException e) {
 		}
+	}
+	
+	public void testOptionalArgumentOption() throws Exception {
+        CmdLineParser parser = new CmdLineParser();
+        Option<Void> voidOption = parser.addVoidOption("void", "this option takes no arguments");
+        parser.parse(new String[]{"--void"});
+        assertNull("that's wrong - voidOptions always return null", voidOption.getValue());
 	}
 	
 	private void assertArrayEquals(Object[] expected, Object[] actual) {

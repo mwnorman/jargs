@@ -7,6 +7,9 @@ Copyright (c) 2002      Michal Ceresna.
 Copyright (c) 2005      Ewan Mellor.
 Copyright (c) 2011      M. Amber Hassaan (generics, replace Vector/Hashtable
                         w List/ArrayList/Map/HashMap
+Copyright (c) 2012      M. Norman
+                        support optional arguments: create a new <Void> OptionValueParser
+                        (useful for --help or --verbose options that dont need any actual values)
 
 All rights reserved.
 

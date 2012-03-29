@@ -41,7 +41,7 @@ public class CustomOptionTestCase extends TestCase {
 
     public void testIllegalCustomOption() throws Exception {
         CmdLineParser parser = new CmdLineParser();
-        CmdLineParser.Option<Date> date =
+        @SuppressWarnings("unused") CmdLineParser.Option<Date> date =
           parser.addUserDefinedOption ('d', "date", shortDateParser, "enter date");
         try {
             parser.parse(new String[]{"-d", "foobar"}, Locale.US);

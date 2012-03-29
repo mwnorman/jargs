@@ -1,3 +1,16 @@
+
+Changes from 1.11 to 1.11
+=========================
+
+- Add support for optional arguments by creating a new type of OptionValueParser
+  that uses <java.lang.Void> as its bound-type in OptionValueParser<T>
+
+Changes from 1.0 to 1.10
+========================
+
+- Use Java 5 generics for OptionValueParser's
+- replace Vector/Hashtable w List/ArrayList/Map/HashMap
+
 Changes from 0.5 to 1.0
 =======================
 
