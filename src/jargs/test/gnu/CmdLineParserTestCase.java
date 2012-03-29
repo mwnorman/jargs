@@ -266,6 +266,24 @@ public class CmdLineParserTestCase extends TestCase {
         }
         assertFalse("null default value should cause IllegalOptionValueException", worked);
     }
+
+
+    public void testOptionIsFound() throws Exception {
+        CmdLineParser parser = new CmdLineParser();
+        Option<Void> voidOption = parser.addVoidOption("void", "this option takes no arguments");
+        Option<String> stringOption = parser.addStringOption("something",
+            "this option means something");
+        Option<String> defaultOption = parser.addStringOption("default",
+            "this option has a default value");
+        defaultOption.addDefaultArgument("whatever!");
+        parser.parse(new String[] {"--something", "meaningful"});
+        assertFalse(voidOption.isFound());
+        assertTrue(stringOption.isFound());
+        assertFalse(defaultOption.isFound());
+        //even though defaultOption is not found, it does have a value!
+        assertEquals("that's wrong - defaultOption's default argument is incorrect", "whatever!",
+            defaultOption.getValue());
+    }
 	
 	private void assertArrayEquals(Object[] expected, Object[] actual) {
 		assertNotNull(actual);

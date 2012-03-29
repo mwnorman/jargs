@@ -193,6 +193,7 @@ public class CmdLineParser {
     private Locale locale = null;
     private List<T> values = new ArrayList<T> ();
     private final String helpMsg;
+    private boolean found = false;
     
     public Option (String longForm, boolean wantsValue, OptionValueParser<T> valueParser, 
         String helpMsg) {
@@ -234,6 +235,10 @@ public class CmdLineParser {
     public void addDefaultArgument(String defaultArgument) {
         this.defaultArgument = defaultArgument;
         this.wantsValue = false;
+    }
+    
+    public boolean isFound() {
+        return found;
     }
     
     /**
@@ -527,9 +532,8 @@ public class CmdLineParser {
               throw new UnknownSuboptionException (curArg, curArg.charAt (i));
             if (opt.wantsValue ())
               throw new NotFlagException (curArg, curArg.charAt (i));
-            // addValue (opt, opt.getValue (null, locale));
             opt.addValue (null, locale);
-
+            opt.found = true;
           }
           position++;
           continue;
@@ -549,9 +553,8 @@ public class CmdLineParser {
         }
         else {
         }
-
-        // addValue (opt, value);
         opt.addValue (valueArg, locale);
+        opt.found = true;
 
         position += 1;
       }

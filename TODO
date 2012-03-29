@@ -1,6 +1,5 @@
 JArgs to-do list
 ================
- Support testing 'isFound()' for an option
  Fix printUsage formatting:
   - add [] indication for optional args
   - add printUsage 'preAmble' and 'postScript' strings </li>

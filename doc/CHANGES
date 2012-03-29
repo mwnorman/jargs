@@ -5,6 +5,7 @@ Changes from 1.11 to 1.11
 - Add support for optional arguments by creating a new type of OptionValueParser
   that uses <java.lang.Void> as its bound-type in OptionValueParser<T>
 - Support adding default value for an option
+- Support testing 'isFound()' for an option
 
 Changes from 1.0 to 1.10
 ========================
