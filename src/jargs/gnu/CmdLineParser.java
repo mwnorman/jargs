@@ -30,6 +30,7 @@ import java.util.Map;
  *  2012      M. Norman
  *             - support optional arguments: create a new <Void> OptionValueParser
  *               (useful for --help or --verbose options that dont need any actual values)
+ *             - support adding default value for an option
  */
 public class CmdLineParser {
 
@@ -186,15 +187,13 @@ public class CmdLineParser {
     private String shortForm = null;
     
     private final String longForm;
-    private final boolean wantsValue;
+    private boolean wantsValue;
     private final OptionValueParser<T> valueParser;
-    
+    private String defaultArgument = null;
+    private Locale locale = null;
     private List<T> values = new ArrayList<T> ();
-
     private final String helpMsg;
     
-    
-
     public Option (String longForm, boolean wantsValue, OptionValueParser<T> valueParser, 
         String helpMsg) {
       this (null, longForm, wantsValue, valueParser, helpMsg);
@@ -231,6 +230,11 @@ public class CmdLineParser {
     public boolean wantsValue () {
       return this.wantsValue;
     }
+
+    public void addDefaultArgument(String defaultArgument) {
+        this.defaultArgument = defaultArgument;
+        this.wantsValue = false;
+    }
     
     /**
      * @return the parsed value of the given Option, or null if the
@@ -242,20 +246,30 @@ public class CmdLineParser {
 
     /**
      * @param def default value
-     * @return the parsed value of the given Option or default provided as argument
+     * @return the parsed value of the given Option or default, either provided as argument
+     * or the defaultArgument set on the given Option 
      */
     public final T getValue (T def) {
 
       assert values != null;
       
-      if (values.isEmpty ()) {
-        return def;
+      T val = def;
+      if (values.isEmpty()) {
+          if (defaultArgument !=  null) {
+              try {
+                  val = valueParser.parse(defaultArgument,
+                      locale == null ? Locale.getDefault() : locale);
+              }
+              catch (IllegalOptionValueException e) {
+                  //ignore
+              }
+          }
       }
       else {
-        T result = values.get (0);
-        values.remove (0);
-        return result;
+          val = values.get(0);
+          values.remove(0);
       }
+      return val;
     }
 
     /**
@@ -273,8 +287,20 @@ public class CmdLineParser {
     }
     
     void addValue (String valArg, Locale locale) throws IllegalOptionValueException {
-      T val = this.valueParser.parse (valArg, locale);
-      values.add (val);
+        this.locale = locale;
+        T val = null;
+        try {
+            val = valueParser.parse(valArg, locale);
+        }
+        catch (IllegalOptionValueException iove) {
+            if (defaultArgument != null) {
+                val = valueParser.parse(defaultArgument, locale);
+            }
+            else {
+                throw iove;
+            }
+        }
+        values.add(val);
     }
     
 

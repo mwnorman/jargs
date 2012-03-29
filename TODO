@@ -1,8 +1,5 @@
 JArgs to-do list
 ================
- Switch to LinkedHashMap so that options print in the order in which they are added (done)
- Support optional arguments of type <Void> i.e. doesn't require a value (done)
- Support adding default value for an option
  Support testing 'isFound()' for an option
  Fix printUsage formatting:
   - add [] indication for optional args

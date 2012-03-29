@@ -240,6 +240,32 @@ public class CmdLineParserTestCase extends TestCase {
         parser.parse(new String[]{"--void"});
         assertNull("that's wrong - voidOptions always return null", voidOption.getValue());
 	}
+
+    static final String DEFAULT_ARG = "I'm a little teapot!";
+    public void testDefaultArgumentOption() throws Exception {
+        CmdLineParser parser = new CmdLineParser();
+        Option<String> stringOption = parser.addStringOption("something",
+            "this option has a default value");
+        stringOption.addDefaultArgument(DEFAULT_ARG);
+        parser.parse(new String[]{"--something"});
+        assertEquals("that's wrong - stringOption's default argument is incorrect", DEFAULT_ARG,
+            stringOption.getValue());
+    }
+
+    public void testNullDefaultArgumentException() throws Exception {
+        CmdLineParser parser = new CmdLineParser();
+        Option<String> stringOption = parser.addStringOption("something",
+            "this option has a default value");
+        stringOption.addDefaultArgument(null);
+        boolean worked = true;
+        try {
+            parser.parse(new String[]{"--something"});
+        }
+        catch (CmdLineParser.IllegalOptionValueException e) {
+            worked = false;
+        }
+        assertFalse("null default value should cause IllegalOptionValueException", worked);
+    }
 	
 	private void assertArrayEquals(Object[] expected, Object[] actual) {
 		assertNotNull(actual);
