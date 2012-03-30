@@ -8,28 +8,33 @@ Copyright (c) 2005      Ewan Mellor.
 Copyright (c) 2011      M. Amber Hassaan (generics, replace Vector/Hashtable
                         w List/ArrayList/Map/HashMap
 Copyright (c) 2012      M. Norman
-                        support optional arguments: create a new <Void> OptionValueParser
-                        (useful for --help or --verbose options that dont need any actual values)
+                        Switch to LinkedHashMap so that options print in the
+                          order in which they are added
+                        Add support for optional arguments by creating a new
+                          type of OptionValueParser that uses <java.lang.Void>
+                          as its bound-type in OptionValueParser<T>
+                        Support adding default value for an option
+                        Support testing 'isFound()' for an option
+                        move to JUnit4
 
 All rights reserved.
 
 Released under the terms of the BSD licence.  See the file LICENCE for
 details.
 
-
 Prerequisites
 -------------
-
 For each prerequisite, the version with which JArgs has been tested is given 
 in parentheses.  Any version equal to or later than this should work.
 
 Apache Ant (1.4.1), by The Apache Software Foundation, from
 http://ant.apache.org/.  Ant is used to build JArgs, and to run its tests.
 
-JUnit (3.7), by Eric Gamma, et al, from http://sourceforge.net/projects/junit.
-JUnit is used to run the unit tests, and is not needed to run the library
-itself.
+JUnit4, by Eric Gamma, et al, from http://www.junit.org/
+JUnit is used to run the unit tests, and is not needed to run the library itself.
 
+NB - the use of generics and @Override annotations on Interface-implementations
+     means that Java SE 6 is required.
 
 Installation
 ------------
