@@ -1,6 +1,3 @@
 JArgs to-do list
 ================
- Fix printUsage formatting:
-  - add [] indication for optional args
-  - add printUsage 'preAmble' and 'postScript' strings </li>
-  - indenting
+ 

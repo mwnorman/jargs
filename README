@@ -16,6 +16,10 @@ Copyright (c) 2012      M. Norman
                         Support adding default value for an option
                         Support testing 'isFound()' for an option
                         move to JUnit4
+                        fix printUsage() formatting:
+                           add [] indication for optional args
+                           add printUsage 'preAmble' and 'postScript' strings
+                           indenting
 
 All rights reserved.
 

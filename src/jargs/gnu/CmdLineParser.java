@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +35,11 @@ import java.util.Map;
  *                  - support adding default value for an option
  *                  - support an 'isFound()' test method for an option
  *                  - move to JUnit4
+ *                  - fix printUsage() formatting:
+ *                        add [] indication for optional args
+ *                        add printUsage 'preAmble' and 'postScript' strings
+ *                        indenting
+ *                        
  */
 public class CmdLineParser {
 
@@ -263,8 +269,22 @@ public class CmdLineParser {
         public OptionValueParser<T> getValueParser() {
             return valueParser;
         }
-        String getHelpMsg() {
-            return String.format("-%s, --%s === %s", shortForm, longForm, helpMsg);
+        static final String FORMAT_STR = "--%s === %s";
+        protected String getHelpMsg() {
+            String formatString = new String(FORMAT_STR);
+            Object args[] = new String[2];
+            int idx = 0;
+            if (shortForm != null) {
+                formatString = "-%s, " + formatString;
+                args = Arrays.copyOf(args, args.length+1);
+                args[idx++] = shortForm;
+            }
+            args[idx++] = longForm;
+            args[idx++] = helpMsg;
+            if (!wantsValue) {
+                formatString = "[" + formatString + "]";
+            }
+            return String.format(formatString, args);
         }
     }
     /**
@@ -487,11 +507,18 @@ public class CmdLineParser {
      * @return usage as a string
      */
     public String getUsage() {
-        String ret = "";
+        StringBuilder sb = new StringBuilder(usagePreamble);
         for (Option<?> o : options.values()) {
-            ret = ret + o.getHelpMsg() + "\n";
+            if (optionIndent != null) {
+                sb.append(optionIndent);
+            }
+            sb.append(o.getHelpMsg());
+            sb.append("\n");
         }
-        return ret;
+        if (usagePostscript != null) {
+            sb.append(usagePostscript);
+        }
+        return sb.toString();
     }
     /**
      * print usage to the specified print stream
@@ -507,9 +534,21 @@ public class CmdLineParser {
     public void printUsage() {
         printUsage(System.err);
     }
+    public void setUsagePreamble(String usagePreamble) {
+        this.usagePreamble = usagePreamble;
+    }
+    public void setUsagePostscript(String usagePostscript) {
+        this.usagePostscript = usagePostscript;
+    }
+    public void setOptionIndent(String optionIndent) {
+        this.optionIndent = optionIndent;
+    }
     private String[] remainingArgs = null;
     // switch to LinkedHashMap so that options are printed in order they are added to the parser
     private Map<String, Option<?>> options = new LinkedHashMap<String, CmdLineParser.Option<?>>(10);
+    private String usagePreamble = "";
+    private String usagePostscript = "";
+    private String optionIndent = null;
 
     public static final OptionValueParser<Void> voidParser = new OptionValueParser<Void>() {
         @Override

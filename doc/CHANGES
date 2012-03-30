@@ -1,5 +1,5 @@
 
-Changes from 1.11 to 1.11
+Changes from 1.10 to 1.11
 =========================
 - Switch to LinkedHashMap so that options print in the order in which they are added
 - Add support for optional arguments by creating a new type of OptionValueParser
@@ -7,6 +7,10 @@ Changes from 1.11 to 1.11
 - Support adding default value for an option
 - Support testing 'isFound()' for an option
 - move to JUnit4
+- fix printUsage() formatting:
+    add [] indication for optional args
+    add printUsage 'preAmble' and 'postScript' strings
+    indenting
 
 Changes from 1.0 to 1.10
 ========================
