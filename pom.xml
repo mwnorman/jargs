@@ -7,7 +7,7 @@
     <version>1.11</version>
 	<packaging>jar</packaging>
     <name>JArgs</name>
-	<url>http://diskstation/jargs</url>
+	<url>ftp://diskstation/web/maven2</url>
     <description>(my fork'd version of) The JArgs command-line argument parsing library (https://github.com/purcell/jargs).</description>
 
 	<properties>
