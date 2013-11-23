@@ -20,21 +20,19 @@ Copyright (c) 2012      M. Norman
                            add [] indication for optional args
                            add printUsage 'preAmble' and 'postScript' strings
                            indenting
+              2013      M. Norman
+                        mavenize project
 
 All rights reserved.
 
-Released under the terms of the BSD licence.  See the file LICENCE for
-details.
+Released under the terms of the BSD licence.  See the file LICENCE for details.
 
 Prerequisites
 -------------
 For each prerequisite, the version with which JArgs has been tested is given 
 in parentheses.  Any version equal to or later than this should work.
 
-Apache Ant (1.4.1), by The Apache Software Foundation, from
-http://ant.apache.org/.  Ant is used to build JArgs, and to run its tests.
-
-JUnit4, by Eric Gamma, et al, from http://www.junit.org/
+JUnit4 (4.11) by Eric Gamma, et al, from http://www.junit.org/
 JUnit is used to run the unit tests, and is not needed to run the library itself.
 
 NB - the use of generics and @Override annotations on Interface-implementations
@@ -42,26 +40,72 @@ NB - the use of generics and @Override annotations on Interface-implementations
 
 Installation
 ------------
+To compile, test and package the code into a jar file, run:
 
-To compile, package, and test the code, run
+    mvn package
 
-ant
+There are also settings in the pom.xml file to deploy (via ftp) the maven-
+generated artifacts (i.e. jar file, generated maven site) to a local server:
 
-Two jars are created, one called lib/jargs.jar, which contains the runtime
-library, and one called lib/jargs-test.jar, which contains the unit tests and
-the examples.  The Javadoc APIs are created in doc/api.
+    mvn deploy site-deploy
+    
+You will need to alter the <distributionManagement> section:
 
-To use the library with your own code, simply ensure that lib/jargs.jar is on
-the CLASSPATH.
+...
+    <distributionManagement>
+        <repository>
+            <id>your_local_server</id>
+            <url>ftp://a.b.c.d/somedir/maven2/</url>
+        </repository>
+        <site>
+          <id>your_local_server</id>
+          <url>ftp://a.b.c.d/somedir/jargs</url>
+        </site>
+    </distributionManagement>
 
+as well as your ~/.m2/settings.xml file:
+
+...
+    <servers>
+        <server>
+            <id>your_local_server</id>
+            <username>user</username>
+            <password>password</password>
+        </server>
+    </servers>
+...
+
+To use the library with your own code, add the following to your pom.xml file:
+
+...
+    <properties>
+        <jargs.version>1.11</jargs.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>your_local_server</id>
+            <url>http://a.b.c.d/somedir/maven2</url>
+        </repository>
+    </repositories>
+    
+    <dependencies>
+ ...
+        <dependency>
+            <groupId>jargs.gnu</groupId>
+            <artifactId>jargs</artifactId>
+            <version>${jargs.version}</version>
+        </dependency>
+    </dependencies>
+...
+</project>
 
 Documentation
 -------------
 
-The main documentation is the detailed worked example in
-src/jargs/examples/gnu/OptionTest.java, plus the generated API documentation
-in doc/api/.
-
+The main documentation is the detailed working example in
+src/jargs/examples/gnu/OptionTest.java, plus the generated
+javadoc.
 
 Package contents
 ----------------
@@ -69,6 +113,4 @@ Package contents
   src/jargs/gnu          -- The library itself.
   src/jargs/examples/gnu -- Examples showing how to use the library.
   src/jargs/test/gnu     -- JUnit tests.
-  doc/                   -- API and other documentation.
-  classes/               -- Compiled classes, once built.
-  lib/                   -- JArgs jars, once built.
+  target/                -- Maven-generated artifacts: classes, jar, javadocs, etc.

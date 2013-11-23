@@ -1,0 +1,129 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+    <groupId>jargs.gnu</groupId>
+    <artifactId>jargs</artifactId>
+    <version>1.11</version>
+	<packaging>jar</packaging>
+    <name>JArgs</name>
+	<url>http://diskstation/jargs</url>
+    <description>(my fork'd version of) The JArgs command-line argument parsing library (https://github.com/purcell/jargs).</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.source.level>1.6</project.source.level>
+		<project.target.level>1.6</project.target.level>
+		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+		<maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
+        <maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
+        <maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+        <wagon-ftp.version>2.5</wagon-ftp.version>
+		<junit.version>4.11</junit.version>
+	</properties>
+	
+	<licenses>
+	    <license>
+	        <name>New (a.k.a. 'Modified') BSD license</name>
+	        <url>http://www.debian.org/misc/bsd.license</url>
+	    </license>
+	</licenses>
+	
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+    <distributionManagement>
+        <repository>
+            <id>diskstation</id>
+            <url>ftp://diskstation/web/maven2/</url>
+        </repository>
+	    <site>
+	      <id>diskstation</id>
+	      <url>ftp://diskstation/web/jargs</url>
+	    </site>
+    </distributionManagement>
+	
+	<build>
+		<finalName>jargs</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<inherited>true</inherited>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>${project.source.level}</source>
+					<target>${project.target.level}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+			    <configuration>
+			      <testFailureIgnore>true</testFailureIgnore>
+		          <includes>
+		              <include>**/AllTests.java</include>
+		          </includes>
+			    </configuration>
+			</plugin>
+		</plugins>
+        <extensions>
+	        <extension>
+		        <groupId>org.apache.maven.wagon</groupId>
+		        <artifactId>wagon-ftp</artifactId>
+		        <version>${wagon-ftp.version}</version>
+	        </extension>
+        </extensions>
+	</build>
+	
+    <reporting>
+        <plugins>
+		    <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-project-info-reports-plugin</artifactId>
+		        <version>${maven-project-info-reports-plugin.version}</version>
+		        <reportSets>
+		          <reportSet>
+		            <reports><!-- select reports -->
+		              <report>index</report>
+                      <report>license</report>
+		            </reports>
+                  </reportSet>
+		        </reportSets>
+		    </plugin>
+		    <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-javadoc-plugin</artifactId>
+		        <version>${maven-javadoc-plugin.version}</version>
+		        <configuration>
+                    <sourceFileExcludes>
+                        <sourceFileExclude>jargs/examples/**</sourceFileExclude>
+                    </sourceFileExcludes>
+                </configuration>
+		        <reportSets>
+		          <reportSet>
+		            <id>default</id>
+		            <reports>
+		              <report>javadoc</report>
+		            </reports>
+		          </reportSet>
+                </reportSets>
+		    </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
+	
+</project>
