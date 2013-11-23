@@ -7,7 +7,7 @@
     <version>1.11</version>
 	<packaging>jar</packaging>
     <name>JArgs</name>
-	<url>ftp://diskstation/web/maven2</url>
+	<url>ftp://diskstation/web/maven2/releases</url>
     <description>(my fork'd version of) The JArgs command-line argument parsing library (https://github.com/purcell/jargs).</description>
 
 	<properties>
@@ -15,6 +15,7 @@
 		<project.source.level>1.6</project.source.level>
 		<project.target.level>1.6</project.target.level>
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>
 		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
 		<maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
         <maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
@@ -39,11 +40,11 @@
 		</dependency>
 	</dependencies>
 	
-    <distributionManagement>
-        <repository>
-            <id>diskstation</id>
-            <url>ftp://diskstation/web/maven2/</url>
-        </repository>
+	<distributionManagement>
+	    <repository>
+	        <id>diskstation</id>
+	        <url>ftp://diskstation/web/maven2/releases/</url>
+	    </repository>
 	    <site>
 	      <id>diskstation</id>
 	      <url>ftp://diskstation/web/jargs</url>
@@ -63,6 +64,32 @@
 					<target>${project.target.level}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
+			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-source-plugin</artifactId>
+			    <version>${maven-source-plugin.version}</version>
+			    <executions>
+			        <execution>
+			            <id>attach-sources</id>
+			            <goals>
+			                <goal>jar</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+			    <executions>
+			        <execution>
+			            <id>attach-javadocs</id>
+			            <goals>
+			                <goal>jar</goal>
+			            </goals>
+			        </execution>
+			    </executions>
 			</plugin>
 			<plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
