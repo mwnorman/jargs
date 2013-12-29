@@ -6,10 +6,12 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Largely GNU-compatible command-line options parser. Has short (-v) and long-form (--verbose)
@@ -17,7 +19,7 @@ import java.util.Map;
  * Option processing can be explicitly terminated by the argument '--'.
  *
  * @author Mike Norman
- * @version 1.12
+ * @version 1.13
  * @see jargs.examples.gnu.OptionTest
  *
  *      List of authors:
@@ -304,6 +306,7 @@ public class CmdLineParser {
         static final String FORMAT_STR = "--%s === %s";
         static final String DASH_FORMAT_STR = "-%s, ";
         static final String REQUIRED_STR = " (required)";
+        static final String OPTIONAL_STR_W_DEFAULT = " [optional, default = %s]";
         static final String OPTIONAL_STR = " [optional]";
         protected String getHelpMsg() {
             StringBuilder formatString = new StringBuilder(FORMAT_STR);
@@ -320,7 +323,14 @@ public class CmdLineParser {
                 formatString.append(REQUIRED_STR);
             }
             else {
-                formatString.append(OPTIONAL_STR);
+                if (defaultArgument != null) {
+                    formatString.append(OPTIONAL_STR_W_DEFAULT);
+                    args = Arrays.copyOf(args, args.length+1);
+                    args[idx++] = defaultArgument;
+                }
+                else {
+                    formatString.append(OPTIONAL_STR);
+                }
             }
             return String.format(formatString.toString(), args);
         }
@@ -611,7 +621,10 @@ public class CmdLineParser {
      */
     public String getUsage() {
         StringBuilder sb = new StringBuilder(usagePreamble);
-        for (Option<?> o : options.values()) {
+        //options with both short and long forms show up twice in options.values()
+        //but for the purposes of printing, only need one
+        Set<Option<?>> optionsSet = new HashSet<Option<?>>(options.values());
+        for (Option<?> o : optionsSet) {
             if (optionIndent != null) {
                 sb.append(optionIndent);
             }
