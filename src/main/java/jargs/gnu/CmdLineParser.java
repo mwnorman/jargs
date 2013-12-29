@@ -17,7 +17,7 @@ import java.util.Map;
  * Option processing can be explicitly terminated by the argument '--'.
  *
  * @author Mike Norman
- * @version $Revision: 1.11 $
+ * @version 1.12
  * @see jargs.examples.gnu.OptionTest
  *
  *      List of authors:
@@ -303,21 +303,26 @@ public class CmdLineParser {
         }
         static final String FORMAT_STR = "--%s === %s";
         static final String DASH_FORMAT_STR = "-%s, ";
+        static final String REQUIRED_STR = " (required)";
+        static final String OPTIONAL_STR = " [optional]";
         protected String getHelpMsg() {
-            String formatString = new String(FORMAT_STR);
+            StringBuilder formatString = new StringBuilder(FORMAT_STR);
             Object args[] = new String[2];
             int idx = 0;
             if (shortForm != null) {
-                formatString = DASH_FORMAT_STR + formatString;
+                formatString.insert(0, DASH_FORMAT_STR);
                 args = Arrays.copyOf(args, args.length+1);
                 args[idx++] = shortForm;
             }
             args[idx++] = longForm;
             args[idx++] = helpMsg;
-            if (!wantsValue) {
-                formatString = LB + formatString + RB;
+            if (wantsValue) {
+                formatString.append(REQUIRED_STR);
             }
-            return String.format(formatString, args);
+            else {
+                formatString.append(OPTIONAL_STR);
+            }
+            return String.format(formatString.toString(), args);
         }
     }
     /**
