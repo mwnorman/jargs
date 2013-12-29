@@ -1,5 +1,6 @@
 .DS_Store
 *.class
+*.swp
 bin/
 classes/
 .settings/

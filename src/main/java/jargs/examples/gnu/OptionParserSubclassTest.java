@@ -7,7 +7,7 @@ public class OptionParserSubclassTest {
     private static class MyOptionsParser extends CmdLineParser {
 
         public static final Option<Boolean> VERBOSE = new
-            Option<Boolean>('v',"verbose", false, CmdLineParser.flagParser, 
+            Option<Boolean>('v',"verbose", false, CmdLineParser.flagParser,
                 "Print extra information");
 
         public static final Option<Integer> SIZE = new

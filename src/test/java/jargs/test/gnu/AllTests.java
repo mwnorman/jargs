@@ -11,5 +11,5 @@ import org.junit.runners.Suite.SuiteClasses;
     ,CustomOptionTestCase.class
   }
 )
-public class AllTests {  
+public class AllTests {
 }

@@ -1,9 +1,8 @@
 package jargs.examples.gnu;
 
 import jargs.gnu.CmdLineParser;
+import jargs.gnu.CmdLineParser.BaseOptionValueParser;
 import jargs.gnu.CmdLineParser.IllegalOptionValueException;
-import jargs.gnu.CmdLineParser.OptionValueParser;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Locale;
@@ -11,13 +10,11 @@ import java.util.Date;
 
 public class CustomOptionTest {
 
-    
-
     /**
      * A custom type of command line option corresponding to a short
      * date value, e.g. .
      */
-    private static OptionValueParser<Date> shortDateParser = new OptionValueParser<Date>() {
+    private static BaseOptionValueParser<Date> shortDateParser = new BaseOptionValueParser<Date>(Date.class) {
 
       @Override
       public Date parse (String arg, Locale locale) throws IllegalOptionValueException {

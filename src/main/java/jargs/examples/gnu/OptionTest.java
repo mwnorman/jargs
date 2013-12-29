@@ -1,9 +1,10 @@
 package jargs.examples.gnu;
 
-import jargs.gnu.CmdLineParser;
-
+//javase imports
 import java.util.List;
 
+//jargs imports
+import jargs.gnu.CmdLineParser;
 
 public class OptionTest {
 
