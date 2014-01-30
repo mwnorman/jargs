@@ -6,8 +6,8 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -623,7 +623,7 @@ public class CmdLineParser {
         StringBuilder sb = new StringBuilder(usagePreamble);
         //options with both short and long forms show up twice in options.values()
         //but for the purposes of printing, only need one
-        Set<Option<?>> optionsSet = new HashSet<Option<?>>(options.values());
+        Set<Option<?>> optionsSet = new LinkedHashSet<Option<?>>(options.values());
         for (Option<?> o : optionsSet) {
             if (optionIndent != null) {
                 sb.append(optionIndent);
